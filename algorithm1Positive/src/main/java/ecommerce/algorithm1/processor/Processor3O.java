@@ -7,6 +7,11 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * 固定的使用同一种期待(同Processor3X)
+ * @author martin
+ *
+ */
 public class Processor3O implements IProcessor {
 
 	private static final Logger logger = LoggerFactory.getLogger(Processor3O.class);

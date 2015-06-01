@@ -8,23 +8,25 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /***
- * 固定的使用同一种期待(同Processor3O)
+ * 从第三个周期开始，使用相反的期待
  * @author martin
  *
  */
-public class Processor3X implements IProcessor {
+public class Processor3XChange implements IProcessor {
 	
-	private static final Logger logger = LoggerFactory.getLogger(Processor3X.class);
+	private static final Logger logger = LoggerFactory.getLogger(Processor3XChange.class);
 
 	private int offset;
 	private boolean[] source;
 	private int cycleStep;
 	private String class3X;
-	public Processor3X(boolean[] source, int offset, int cycleStep, String class3X){
+	private String class3O;
+	public Processor3XChange(boolean[] source, int offset, int cycleStep, String class3X, String class3O){
 		this.offset = offset;
 		this.source = source;
 		this.cycleStep = cycleStep;
 		this.class3X = class3X;
+		this.class3O = class3O;
 	}
 	
 	private int maxStep;
@@ -43,27 +45,31 @@ public class Processor3X implements IProcessor {
 
 		boolean finished = false;
 		this.procedure = new ArrayList<Integer>();
-		Constructor<ICycle> constructor = null;
+		Constructor<ICycle> constructor3X = null;
+		Constructor<ICycle> constructor3O = null;
 		try {
 			@SuppressWarnings("unchecked")
-			Class<ICycle> Cycle = (Class<ICycle>) Class.forName(this.class3X);
-			constructor = Cycle.getConstructor(int.class);
+			Class<ICycle> Cycle3X = (Class<ICycle>) Class.forName(this.class3X);
+			constructor3X = Cycle3X.getConstructor(int.class);
+			
+			@SuppressWarnings("unchecked")
+			Class<ICycle> Cycle3O = (Class<ICycle>) Class.forName(this.class3O);
+			constructor3O = Cycle3O.getConstructor(int.class);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 
 		int cycleStep = this.cycleStep;
-		logger.debug("3X FOUND");
-		//FileOutput.write("3X FOUND");
+		logger.debug("3X FOUND-CHANGE");
+
 		int totalSum = 0;
 		List<Integer> steps = new ArrayList<Integer>();
 		for(int i=0; i+offset<this.source.length; i+=cycleStep){
 
 			ICycle cycle = null;
 			if(steps.size() == 0){
-				
 				try {
-					cycle = (ICycle) constructor.newInstance(1);
+					cycle = (ICycle) constructor3X.newInstance(1);
 					this.countOfCycle++;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -74,7 +80,10 @@ public class Processor3X implements IProcessor {
 				for(int var : steps)
 					step += Math.abs(var);
 				try {
-					cycle = (ICycle) constructor.newInstance(step);
+					if(steps.size()<2)//周期数小于等于2
+						cycle = (ICycle) constructor3X.newInstance(step);
+					else//周期数大于2
+						cycle = (ICycle) constructor3O.newInstance(step);
 					this.countOfCycle++;
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -93,7 +102,6 @@ public class Processor3X implements IProcessor {
 				if(this.maxStep < Math.abs(val))
 					this.maxStep = Math.abs(val);
 				logger.debug(String.format("%s%d", val<0?"":"+", val));
-				//FileOutput.write(String.format("%s%d", val<0?"":"+", val));
 				this.procedure.add(val);
 				if(totalSum >= 2){
 					bStop = true;
@@ -109,11 +117,6 @@ public class Processor3X implements IProcessor {
 		}
 
 		logger.debug(String.format("=%d {MAX:%d}\r\n", totalSum, this.maxStep));
-		
-		/*if(this.offset+this.procedure.size()<this.source.length)
-			return true;
-		else
-			return false;*/
 		return finished;
 	}
 }
