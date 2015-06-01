@@ -4,6 +4,11 @@ import ecommerce.algorithm1.processor.IProcessor;
 import ecommerce.algorithm1.processor.Processor3O;
 import ecommerce.algorithm1.processor.Start;
 
+/***
+ * 找到3X或者3O
+ * @author martin
+ *
+ */
 public class TrueAndFalse1 implements ITrueAndFalse{
 	
 	private boolean[] source;
@@ -21,7 +26,7 @@ public class TrueAndFalse1 implements ITrueAndFalse{
 	public String getType() { return this.type; }
 	
 	@Override
-	public Result execute(int cycleStep){
+	public IResult execute(int cycleStep){
 
 		String class3O = "ecommerce.algorithm1.processor.CycleNegtive";
 		String class3X = "ecommerce.algorithm1.processor.CyclePositive";
@@ -33,8 +38,6 @@ public class TrueAndFalse1 implements ITrueAndFalse{
 			return new Result(processor.getProcedure(), processor.getMaxStep(), bStop, processor.getCountOfCycle());
 		} else
 			return null;
-		
-		
 	}
 	
 	@Override

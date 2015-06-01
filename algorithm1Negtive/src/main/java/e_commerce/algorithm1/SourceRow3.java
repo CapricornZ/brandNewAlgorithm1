@@ -6,35 +6,35 @@ import java.util.List;
 import ecommerce.algorithm1.pairs.IPair;
 
 /***
- * 参考最初的算法1，先找到Header（长度==之前四组的字母个数）
+ * 参考最初的算法1，先找到Header（长度==3）
  * @author martin
  *
  */
-public class SourceRow {
+public class SourceRow3 {
 	
 	private String source;
 	private IPair pairEngine;
-	public SourceRow(String source, IPair pair){
+	public SourceRow3(String source, IPair pair){
 		this.source = source;
 		this.pairEngine = pair;
 	}
 	
 	public ITrueAndFalse execute(){
 	
-		int header = this.findHeader();
-		boolean[] rtn = new boolean[source.length() - header - 1];
-		int index = 1;
+		int header = 3;
+		boolean[] rtn = new boolean[source.length() - header];
+		int index = 0;
 		while (true) {
 
 			int i = 0;
 			boolean isPair = false;
 
-			for (; i < 4 && !isPair && index + header + (i + 1) <= source.length(); i++) {
+			for (; i < 3 && !isPair && index + header + (i + 1) <= source.length(); i++) {
 				String first = source.substring(index, index + (i + 1));
 				String second = source.substring(index + header, index + header + (i + 1));
 				isPair = this.pairEngine.pair(first, second);
 
-				rtn[index -1 + i] = isPair;
+				rtn[index+i] = isPair;
 			}
 			if (i == 0)
 				break;

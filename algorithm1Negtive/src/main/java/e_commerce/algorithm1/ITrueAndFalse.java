@@ -5,5 +5,5 @@ public interface ITrueAndFalse {
 	boolean[] getSource();
 	String getFormated();
 	String getType();
-	Result execute(int cycleStep);
+	IResult execute(int cycleStep);
 }

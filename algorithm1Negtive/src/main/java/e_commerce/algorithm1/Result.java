@@ -2,7 +2,7 @@ package e_commerce.algorithm1;
 
 import java.util.List;
 
-public class Result {
+public class Result implements IResult {
 
 	private List<Integer> source;
 	private int sum;
@@ -41,7 +41,7 @@ public class Result {
 				sb.append(String.format("+%d", val));
 			else
 				sb.append(String.format("%d", val));
-		sb.append(String.format(" = %d  MAX:%d", sum, max));
+		sb.append(String.format(" = %d  [MAX:%d, COUNT:%d]", sum, max, this.countOfCycle));
 		return sb.toString();
 	}
 }
